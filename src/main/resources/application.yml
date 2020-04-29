@@ -1,10 +1,10 @@
 spring:
   #配置数据库远程连接
   datasource:
-    url: jdbc:mysql://139.199.66.139:3306/images
+    url: jdbc:mysql://139.199.66.139:3306/photoview?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=GMT%2B8
     username: root
     password: "000000"
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     #配置连接池
     type: com.zaxxer.hikari.HikariDataSource
     hikari:

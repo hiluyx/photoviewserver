@@ -15,6 +15,6 @@ public interface ImageNodeDAO extends JpaRepository<ImageNode,Integer> {
 
     @Modifying
     @Transactional
-    @Query("delete from imageNodes where id in (:ids)")
+    @Query("delete from image_node where id in (:ids)")
     void deleteImageNodes(@Param("ids") List<Integer> ids);
 }

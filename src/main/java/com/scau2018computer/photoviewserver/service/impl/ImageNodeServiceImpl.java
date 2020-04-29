@@ -27,7 +27,7 @@ public class ImageNodeServiceImpl  implements ImageNodeService {
 
     @Override
     public Page<ImageNode> findByPage(int page, int size) {
-        Pageable pageRequest = PageRequest.of(page, size,Sort.Direction.DESC);
+        Pageable pageRequest = PageRequest.of(page,size,Sort.Direction.DESC,"id");
         return imageNodeDAO.findAll(pageRequest);
     }
 

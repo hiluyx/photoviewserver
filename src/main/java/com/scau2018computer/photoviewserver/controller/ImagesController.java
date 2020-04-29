@@ -23,8 +23,8 @@ public class ImagesController {
 
     @GetMapping(value = "/getImagesDivideIntoPages")
     public List<ImageNode> imagesDivideIntoPages(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size ){
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "1") int size ){
         return imageNodeService.findByPage(page,size).getContent();
     }
 

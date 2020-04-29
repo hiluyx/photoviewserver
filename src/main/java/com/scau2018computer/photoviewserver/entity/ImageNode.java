@@ -6,22 +6,25 @@ import javax.persistence.*;
 
 @Table(name = "images")
 @Data
-@Entity(name = "imageNodes")
+@Entity(name = "image_node")
 public class ImageNode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "base64EncodedImage")
-    private String base64EncodedImage;
+    @Column(name = "image_string")
+    private String imageString;
 
     public ImageNode(String base64EncodedImage){
-        this.setBase64EncodedImage(base64EncodedImage);
+        this.setImageString(base64EncodedImage);
     }
 
+    public ImageNode(){
+
+    }
     @Override
     public String toString(){
-        return this.getId() + ":" + this.getBase64EncodedImage();
+        return this.getId() + ":" + this.getImageString();
     }
 }
