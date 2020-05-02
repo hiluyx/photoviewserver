@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ImageNodeService {
     Page<ImageNode> findByPage(int page, int size);
-    void addBatch(List<ImageNode> imageNodeList);
+    void add(String base64EncodedImage);
     void deleteBatch(List<Integer> idList);
 }
