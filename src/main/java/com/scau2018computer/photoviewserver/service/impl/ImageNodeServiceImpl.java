@@ -32,8 +32,8 @@ public class ImageNodeServiceImpl  implements ImageNodeService {
     }
 
     @Override
-    public void add(String base64EncodedImage) {
-        imageNodeDAO.save(new ImageNode(base64EncodedImage));
+    public void add(ImageNode imageNode) {
+        imageNodeDAO.save(imageNode);
     }
 
     @Override

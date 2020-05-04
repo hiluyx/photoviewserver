@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -42,33 +45,45 @@ public class ImagesController {
     }
 
     @PostMapping(value = "/addImages")
-    public String addImages(@RequestParam("fileBody") MultipartFile multipartFile) throws IOException {
-        if (multipartFile == null) {
-            return "null";
-        } else {
-            File toFile = multipartFileToFile(multipartFile);
-            if(toFile == null) return "null";
-            byte[] buffer = new byte[(int) toFile.length()];
-            FileInputStream fis = new FileInputStream(toFile);
-            fis.read(buffer);
-            fis.close();
-            toFile.delete();
-            String base64EncodedImages = new BASE64Encoder().encode(buffer);
-            imageNodeService.add(base64EncodedImages);
+    public String addImages(@RequestParam("files") MultipartFile[] multipartFiles) throws IOException {
+        if (multipartFiles.length > 0) {
+            for (MultipartFile mpf : multipartFiles) {
+                File toFile = multipartFileToFile(mpf);
+                imageNodeService.add(new ImageNode(toFile.getName(), toBASE64Encoded(toFile)));
+            }
             return "OK";
+        }else{
+            return "NULL";
         }
     }
     public static File multipartFileToFile(MultipartFile multipartFile) throws IOException {
         String fileRealName = multipartFile.getOriginalFilename();//获得原始文件名;
-        if (fileRealName == null) return null;
-        int pointIndex =  fileRealName.lastIndexOf(".");//点号的位置
-        String fileSuffix = fileRealName.substring(pointIndex);//截取文件后缀
-        String fileNewName = "temp".concat(fileSuffix);
-        File file = new File( "D:\\" + fileNewName);
-        if(file.exists()){
-            file.delete();
+        System.out.println(fileRealName);
+        InputStream ins = multipartFile.getInputStream();
+        assert fileRealName != null;
+        File file = new File(fileRealName);
+        try {
+            OutputStream os = new FileOutputStream(file);
+            int bytesRead;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.close();
+            ins.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        multipartFile.transferTo(file);
         return file;
+    }
+    public static String toBASE64Encoded(File file) throws IOException {
+        byte[] buffer = new byte[(int) file.length()];
+        FileInputStream fis;
+        fis = new FileInputStream(file);
+        fis.read(buffer);
+        fis.close();
+        File del = new File(file.toURI());
+        del.delete();
+        return new BASE64Encoder().encode(buffer);
     }
 }

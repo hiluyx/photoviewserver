@@ -13,10 +13,14 @@ public class ImageNode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "file_name")
+    private String fileName;
+
     @Column(name = "image_string")
     private String imageString;
 
-    public ImageNode(String base64EncodedImage){
+    public ImageNode(String fileName,String base64EncodedImage){
+        this.fileName = fileName;
         this.setImageString(base64EncodedImage);
     }
 
