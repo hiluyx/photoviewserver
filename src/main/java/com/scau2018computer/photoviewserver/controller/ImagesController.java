@@ -37,11 +37,16 @@ public class ImagesController {
     public String deleteImages(@RequestParam("ids") String ids) {
         String[] idList = ids.split(",");
         List<Integer> list = new ArrayList<>();
-        for (String idPoint : idList) {
-            list.add(Integer.getInteger(idPoint));
+        if (idList.length >1){
+            for (int i = 1;i<idList.length;i++ ){
+                list.add(Integer.parseInt(idList[i]));
+            }
+            imageNodeService.deleteBatch(list);
+            return "ok";
         }
-        imageNodeService.deleteBatch(list);
-        return null;
+        else{
+            return "null";
+        }
     }
 
     @PostMapping(value = "/addImages")
